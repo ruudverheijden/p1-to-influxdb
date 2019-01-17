@@ -1,8 +1,8 @@
 {
-    "database": "",
-    "host": "",
+    "database": "P1readings",
+    "host": "192.168.1.100",
     "protocol": "http",
     "port": 8086,
-    "username": "",
-    "password": ""
+    "username": "user",
+    "password": "zncm734Qebd9DshAc"
 }

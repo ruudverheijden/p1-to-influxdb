@@ -3,7 +3,7 @@ const Influx = require('influx');
 const config = require('./config.json');
 
 // Instantiate P1 Reader en InfluxDB
-const p1Reader = new P1Reader({emulator: true});
+const p1Reader = new P1Reader();
 const influx = new Influx.InfluxDB({
     database: config.database,
     host: config.host,
