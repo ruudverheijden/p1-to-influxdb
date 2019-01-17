@@ -1,0 +1,23 @@
+{
+  "name": "p1-to-influxdb",
+  "version": "0.0.1",
+  "description": "Node.js application to read P1 data and send it to an InfluxDB server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruudverheijden/p1-to-influxdb.git"
+  },
+  "author": "Ruud Verheijden",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ruudverheijden/p1-to-influxdb/issues"
+  },
+  "homepage": "https://github.com/ruudverheijden/p1-to-influxdb#readme",
+  "dependencies": {
+    "influx": "^5.0.7",
+    "p1-reader": "^1.5.1"
+  }
+}
