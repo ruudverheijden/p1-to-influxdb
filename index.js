@@ -1,6 +1,9 @@
 const P1Reader = require('p1-reader');
 const Influx = require('influx');
+const fs = require('fs');
 const config = require('./config.json');
+
+const undeliveredDataFile = 'undeliveredData.csv';
 
 // Instantiate P1 Reader en InfluxDB
 const p1Reader = new P1Reader();
@@ -50,9 +53,15 @@ p1Reader.on('reading', data => {
             precision: 's',
         })
         .catch(error => {
-            console.error(`Error saving data to InfluxDB! ${err.stack}`)
+            // Cache the data and try again later since we could not store it right now
+            cacheUndeliveredData(
+                data.timestamp,
+                data.electricity.received.tariff1.reading,
+                data.electricity.received.tariff2.reading,
+                data.electricity.received.actual.reading,
+                data.gas.reading
+            );
         });
-    
 });
 
 p1Reader.on('error', error => {
@@ -67,3 +76,17 @@ p1Reader.on('close', () => {
 process.on('uncaughtException', error => {
     console.error(error);
 });
+
+// Write data to CSV file if it could not be delivered to the InfluxDB server to be processed later
+function cacheUndeliveredData (timestamp, electricity_tarrif1, electricity_tarrif2, electricity_actual, gas_reading) {
+    var csvOutput = '' +
+    timestamp + ';' +
+    electricity_tarrif1 + ';' +
+    electricity_tarrif2 + ';' +
+    electricity_actual + ';' +
+    gas_reading + '\n';
+
+    fs.appendFile(undeliveredDataFile, csvOutput, error => {
+        console.log('Could not write undelivered data to file', error);
+    });
+}
