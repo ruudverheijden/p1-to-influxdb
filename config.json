@@ -1,8 +1,23 @@
 {
-    "database": "",
-    "host": "",
-    "protocol": "http",
-    "port": 8086,
-    "username": "",
-    "password": ""
+    "influxDb": {
+        "database": "",
+        "host": "",
+        "protocol": "http",
+        "port": 8086,
+        "username": "",
+        "password": "",
+        "measurementName": "p1-readings"
+    },    
+    "p1Reader": {
+        "port": "/dev/ttyUSB0",
+        "baudRate": 115200,
+        "parity": "none",
+        "dataBits": 8,
+        "stopBits": 1,
+        "debug": false
+    },
+    "cache": {
+        "maxLength": 10000,
+        "retryBatchSize": 300
+    }
 }

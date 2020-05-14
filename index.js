@@ -3,22 +3,19 @@ const Influx = require('influx');
 const config = require('./config.json');
 
 let cache = [];
-const cacheMaxLength = 10000; // To prevent memory issues when InfluxDB is not available for a long time
-const cacheRetryBatchSize = 300; // Size of the batch to retry sending data to InfluxDB
-const influxMeasurement = 'p1-readings';
 
 // Instantiate P1 Reader en InfluxDB
-const p1Reader = new P1Reader({debug: true});
+const p1Reader = new P1Reader(config.p1Reader);
 const influx = new Influx.InfluxDB({
-    database: config.database,
-    host: config.host,
-    protocol: config.protocol || 'http',
-    port: config.port || 8086,
-    username: config.username,
-    password: config.password,
+    database: config.influxDb.database,
+    host: config.influxDb.host,
+    protocol: config.influxDb.protocol,
+    port: config.influxDb.port,
+    username: config.influxDb.username,
+    password: config.influxDb.password,
     schema: [
       {
-        measurement: influxMeasurement,
+        measurement: config.influxDb.measurementName,
         fields: {
             electricity_tarrif1: Influx.FieldType.FLOAT,
             electricity_tarrif2: Influx.FieldType.FLOAT,
@@ -68,7 +65,7 @@ setInterval(() => {
         let retryDatapoints = [];
     
         // Get a batch of cached items to be send all at once
-        for(let i = 1; i <= cacheRetryBatchSize; i++) {
+        for(let i = 1; i <= config.cache.retryBatchSize; i++) {
             retryDatapoints.push(cache.shift());
     
             if (cache.length == 0) {
@@ -120,7 +117,7 @@ function cacheUndeliveredData (dataPoints) {
         });
 
         // Remove the oldest item if we reached the cache max length to prevent memory issues
-        if (cache.length > cacheMaxLength) {
+        if (cache.length > config.cache.maxLength) {
             cache.shift();
         }
     }
