@@ -18,6 +18,6 @@
   "homepage": "https://github.com/ruudverheijden/p1-to-influxdb#readme",
   "dependencies": {
     "influx": "^5.0.7",
-    "p1-reader": "^2.0.0"
+    "p1-reader": "^2.0.1"
   }
 }
