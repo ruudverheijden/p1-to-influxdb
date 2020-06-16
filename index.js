@@ -28,10 +28,8 @@ const influx = new Influx.InfluxDB({
   });
 
 // Log that we are connected to the P1 port
-p1Reader.on('connected', portConfig => {
-    console.log('Connection with the Smart Meter has been established on port: ' + portConfig.port
-        + ' (BaudRate: ' + portConfig.baudRate + ', Parity: ' + portConfig.parity + ', Databits: '
-        + portConfig.dataBits + 'Stopbits: ' + portConfig.stopBits + ')');
+p1Reader.on('connected', () => {
+    console.log('Connection with the Smart Meter has been established!');
 });
 
 p1Reader.on('reading', data => {
@@ -83,7 +81,7 @@ function writeToInfluxDB (dataPoints) {
 
     for (let i = 0; i < dataPoints.length; i++) {
         influxPoints.push({
-            measurement: influxMeasurement,
+            measurement: config.influxDb.measurementName,
             tags: {},
             fields: { 
                 electricity_tarrif1: dataPoints[i].electricity_tarrif1,
